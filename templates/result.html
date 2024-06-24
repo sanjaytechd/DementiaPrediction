@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+         background-repeat: no-repeat;
+        background-image: url("https://st2.depositphotos.com/26044198/47044/v/450/depositphotos_470447490-stock-illustration-brain-research-mental-disease-study.jpg");
+        background-size: cover;    
+    }
+        h1 {
+            text-align: center;
+        }
+        img {
+            display: block;
+            margin: 20px auto; 
+            max-width: 500px;
+            height: auto;
+        }
+        p {
+            margin: 10px 0;
+            font-size: 25px;
+        }
+        .result {
+            text-align: center;
+        }
+        .input-group {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center; 
+        }
+        label {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        input[type="text"] {
+            width: 200px; 
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            width: auto; 
+            padding: 10px 20px; 
+            border-radius: 5px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 10px; 
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .demented {
+            color: red;
+            font-weight: bold;
+            font-size: 30px;
+        }
+        .non-demented {
+            color: green;
+            font-weight: bold;
+            font-size: 30px;
+        }
+        .final1 {
+            font-size: 30px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Prediction Result</h1>
+    <div class="result">
+        <img src="{{ image_path }}" alt="MRI Image">
+        <form action="/generate_report" method="post">
+            <div class="input-group">
+                <label for="patient_name"><strong>Patient Name:</strong></label>
+                <input type="text" id="patient_name" name="patient_name" required>
+            </div>
+
+            <div class="input-group">
+                <label for="patient_id"><strong>ID:</strong></label>
+                <input type="text" id="patient_id" name="patient_id" required>
+            </div>
+
+            <input type="hidden" name="svm_result" value="{{ svm_result }}">
+            <input type="hidden" name="model_result" value="{{ model_result }}">
+            <input type="hidden" name="final_result" value="{{ final_result }}">
+            
+            <p><strong> From SVM: {{ svm_result }}</strong></p>
+            <p><strong>Result from CNN Model: {{ model_result }}</strong></p>
+            <p class="final1"><strong>Final Result:</strong>
+                {% if final_result == 'Demented' %}
+                    <span class="demented">{{ final_result }}</span>
+                {% else %}
+                    <span class="non-demented">{{ final_result }}</span>
+                {% endif %}
+            </p>
+
+            <input type="submit" value="Download Report">
+        </form>
+    </div>
+</body>
+</html>
